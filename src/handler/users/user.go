@@ -3,6 +3,7 @@ package user_handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/rudikurniawan99/go-fiber-basic/src/dtos"
+	"github.com/rudikurniawan99/go-fiber-basic/src/models"
 	res "github.com/rudikurniawan99/go-fiber-basic/src/response"
 )
 
@@ -31,5 +32,27 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	return c.JSON(res.JsonResponse{
 		Success: true,
 		Data:    user,
+	})
+}
+
+func GetUserByIdHandler(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.JSON(res.JsonResponse{
+			Success: false,
+			Error:   "data not found",
+			Data:    nil,
+		})
+	}
+
+	return c.JSON(res.JsonResponse{
+		Success: true,
+		Data: models.UserModel{
+			ID:       id,
+			Name:     "K Kurniawawn",
+			Email:    "kurniawan401@gmail.com",
+			Password: "kurniawan",
+		},
 	})
 }
