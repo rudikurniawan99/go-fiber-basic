@@ -30,8 +30,6 @@ func CreateUserHandler(c *fiber.Ctx) error {
 
 	return c.JSON(res.JsonResponse{
 		Success: true,
-		Data: fiber.Map{
-			"body": &user,
-		},
+		Data:    user,
 	})
 }
