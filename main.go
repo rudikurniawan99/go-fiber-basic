@@ -10,6 +10,7 @@ func main() {
 
 	users := app.Group("users")
 	users.Get("/", user_handler.GetUserHandler)
+	users.Post("/", user_handler.CreateUserHandler)
 
 	app.Listen(":8080")
 }
