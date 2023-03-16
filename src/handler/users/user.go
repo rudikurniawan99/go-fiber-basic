@@ -10,7 +10,7 @@ import (
 
 func GetUserHandler(c *fiber.Ctx) error {
 
-	return c.JSON(fiber.Map{
+	return c.Status(200).JSON(fiber.Map{
 		"success": true,
 		"data": fiber.Map{
 			"name": "Rudi Kurniawan",
@@ -23,7 +23,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	user := &dtos.UserDTO{}
 
 	if err := c.BodyParser(user); err != nil {
-		return c.JSON(res.ErrorResponse{
+		return c.Status(400).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
 			Message: "body parser error",
@@ -31,14 +31,14 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	}
 
 	if err := validator.Validate(user); err != nil {
-		return c.JSON(res.ErrorResponse{
+		return c.Status(400).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
 			Message: "validator fail",
 		})
 	}
 
-	return c.JSON(res.JsonResponse{
+	return c.Status(200).JSON(res.JsonResponse{
 		Success: true,
 		Data:    user,
 	})
@@ -48,13 +48,13 @@ func GetUserByIdHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if id == "" {
-		return c.JSON(res.ErrorResponse{
+		return c.Status(404).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   "data not found",
 		})
 	}
 
-	return c.JSON(res.JsonResponse{
+	return c.Status(201).JSON(res.JsonResponse{
 		Success: true,
 		Data: models.UserModel{
 			ID:       id,

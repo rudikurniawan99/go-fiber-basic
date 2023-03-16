@@ -36,7 +36,7 @@ func CreateProduct(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(res.JsonResponse{
+	return c.Status(201).JSON(res.JsonResponse{
 		Success: true,
 		Data:    product,
 	})
