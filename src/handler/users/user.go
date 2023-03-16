@@ -1,9 +1,9 @@
 package user_handler
 
 import (
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rudikurniawan99/go-fiber-basic/src/dtos"
+	validator "github.com/rudikurniawan99/go-fiber-basic/src/helper/validator"
 	"github.com/rudikurniawan99/go-fiber-basic/src/models"
 	res "github.com/rudikurniawan99/go-fiber-basic/src/response"
 )
@@ -20,10 +20,9 @@ func GetUserHandler(c *fiber.Ctx) error {
 }
 
 func CreateUserHandler(c *fiber.Ctx) error {
-	validate := validator.New()
-	user := dtos.UserDTO{}
+	user := &dtos.UserDTO{}
 
-	if err := c.BodyParser(&user); err != nil {
+	if err := c.BodyParser(user); err != nil {
 		return c.JSON(res.JsonResponse{
 			Success: false,
 			Error:   err.Error(),
@@ -31,7 +30,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := validate.Struct(&user); err != nil {
+	if err := validator.Validate(user); err != nil {
 		return c.JSON(res.JsonResponse{
 			Success: false,
 			Data:    nil,
