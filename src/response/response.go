@@ -1,7 +1,11 @@
 package response
 
 type JsonResponse struct {
+	Success bool `json:"success"`
+	Data    any  `json:"data"`
+}
+type ErrorResponse struct {
 	Success bool   `json:"success"`
 	Error   string `json:"error"`
-	Data    any    `json:"data"`
+	Message string `json:"message"`
 }
