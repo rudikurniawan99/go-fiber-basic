@@ -30,7 +30,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := validator.Validate(user); err != nil {
+	if err := validator.ValidateUserPassword(); err != nil {
 		return c.Status(400).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
