@@ -23,18 +23,18 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	user := &dtos.UserDTO{}
 
 	if err := c.BodyParser(user); err != nil {
-		return c.JSON(res.JsonResponse{
+		return c.JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
-			Data:    nil,
+			Message: "body parser error",
 		})
 	}
 
 	if err := validator.Validate(user); err != nil {
-		return c.JSON(res.JsonResponse{
+		return c.JSON(res.ErrorResponse{
 			Success: false,
-			Data:    nil,
 			Error:   err.Error(),
+			Message: "validator fail",
 		})
 	}
 
@@ -48,10 +48,9 @@ func GetUserByIdHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if id == "" {
-		return c.JSON(res.JsonResponse{
+		return c.JSON(res.ErrorResponse{
 			Success: false,
 			Error:   "data not found",
-			Data:    nil,
 		})
 	}
 

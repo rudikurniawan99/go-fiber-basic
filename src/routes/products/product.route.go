@@ -11,4 +11,5 @@ type ProductRoute interface {
 
 func Mount(group fiber.Router) {
 	group.Get("/", product_handler.GetProduct)
+	group.Post("/", product_handler.CreateProduct)
 }
