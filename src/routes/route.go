@@ -10,6 +10,6 @@ func Init(e *fiber.App) {
 	users := e.Group("users")
 	user_route.Mount(users)
 
-	product := e.Group("product")
-	product_route.Mount(product)
+	products := e.Group("products")
+	product_route.Mount(products)
 }

@@ -1,11 +1,14 @@
 package product_route
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	product_handler "github.com/rudikurniawan99/go-fiber-basic/src/handler/products"
+)
 
 type ProductRoute interface {
 	Mount(group fiber.Router)
 }
 
 func Mount(group fiber.Router) {
-	// group.Get("/", )
+	group.Get("/", product_handler.GetProduct)
 }
