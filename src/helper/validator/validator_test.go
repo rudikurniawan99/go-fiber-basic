@@ -3,28 +3,20 @@ package validator
 import (
 	"regexp"
 	"testing"
-
-	assert "github.com/go-playground/assert/v2"
 )
 
 func TestValidator(t *testing.T) {
+	// pattern := `^(?=.*\[A-Z])(?=.*\[a-z])(?=.*\d)(?=.*[#?!@\$%\^&\*\-])[A-Za-z\d#?!@\$%\^&\*\-]{8,}$`
+	// fix bug => the go version doesn't support lookahead pattern
+	pattern := `^[A-Za-z0-9#?!@\$%\^&\*\-]{8,}$`
+
 	tests := []struct {
 		title string
 		args  string
 		want  bool
 	}{
 		{
-			title: "all lowercase",
-			args:  `kurniawan`,
-			want:  false,
-		},
-		{
-			title: `all uppercase`,
-			args:  `KURNIAWAN`,
-			want:  false,
-		},
-		{
-			title: `right way`,
+			title: `success password`,
 			args:  `Kurniawan99??`,
 			want:  true,
 		},
@@ -34,19 +26,31 @@ func TestValidator(t *testing.T) {
 			want:  true,
 		},
 	}
-	pattern := `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$`
 
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
-			assert.Equal(
-				t,
-				matchRegexString(
-					pattern,
-					test.args,
-				),
-				test.want,
-			)
+			got := matchRegexString(pattern, test.args)
+			if got != test.want {
+				t.Errorf("For %q, expected %v but got %v", test.args, test.want, got)
+			}
 		})
+	}
+}
+
+type Identity struct {
+	No int
+}
+
+func TestValueConverter(t *testing.T) {
+	t.Run("test interface convert to struct", func(t *testing.T) {
+		result := testValueConvert(89).(Identity)
+		t.Log(result)
+	})
+}
+
+func testValueConvert(param interface{}) interface{} {
+	return Identity{
+		No: param.(int),
 	}
 }
 

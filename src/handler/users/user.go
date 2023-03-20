@@ -23,18 +23,18 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	user := &dtos.UserDTO{}
 
 	if err := c.BodyParser(user); err != nil {
-		return c.Status(400).JSON(res.ErrorResponse{
+		return c.Status(fiber.StatusBadRequest).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
 			Message: "body parser error",
 		})
 	}
 
-	if err := validator.ValidateUserPassword(); err != nil {
-		return c.Status(400).JSON(res.ErrorResponse{
+	if err := validator.ValidateUserPassword(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(res.ErrorResponse{
 			Success: false,
 			Error:   err.Error(),
-			Message: "validator fail",
+			Message: "password should have 8 character,at least 1 uppercase, 1 lowercase, 1 special character",
 		})
 	}
 

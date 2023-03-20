@@ -25,8 +25,7 @@ func CustomValidation[T any](dto *T, tag string, fn validator.Func) error {
 }
 
 func validatePassword(fl validator.FieldLevel) bool {
-	// pattern := `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$`
-	pattern := `kurniawan`
+	pattern := `^[A-Za-z0-9#?!@\$%\^&\*\-]{8,}$`
 	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return false
@@ -35,9 +34,8 @@ func validatePassword(fl validator.FieldLevel) bool {
 	return re.MatchString(fl.Field().String())
 }
 
-func ValidateUserPassword() error {
+func ValidateUserPassword(user *dtos.UserDTO) error {
 	validate := validator.New()
-	user := &dtos.UserDTO{}
 	validate.RegisterValidation("password", validatePassword)
 
 	if err := validate.Struct(user); err != nil {
