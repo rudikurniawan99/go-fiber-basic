@@ -12,4 +12,5 @@ func Init(e *fiber.App) {
 
 	products := e.Group("products")
 	product_route.Mount(products)
+	//test this yow
 }
